@@ -14,7 +14,7 @@ import css from './Notes.module.css';
 
 const PER_PAGE = 12;
 
-const App: React.FC = () => {
+const Notes: React.FC = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [debounced] = useDebounce(search, 500);
@@ -65,4 +65,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default Notes;

@@ -18,7 +18,7 @@ const NoteList: React.FC<NoteListProps> = ({ notes }) => {
     },
   });
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: number | string) => {
     mutation.mutate(id);
   };
 

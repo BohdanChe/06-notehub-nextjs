@@ -28,7 +28,7 @@ export const fetchNotes = async (
   params: FetchNotesParams = {}
 ): Promise<FetchNotesResponse> => {
   const cleanParams = Object.fromEntries(
-    Object.entries(params).filter(([_, v]) => v !== undefined && v !== null && v !== '')
+    Object.entries(params).filter(([ , v]) => v !== undefined && v !== null && v !== '')
   );
 
   const response = await axiosInstance.get<FetchNotesResponse>('/notes', {
@@ -48,13 +48,13 @@ export const createNote = async (note: {
 };
 
 // Дозволяємо id бути number або string
-export const deleteNote = async (id: number): Promise<Note> => {
+export const deleteNote = async (id: number| string): Promise<Note> => {
   const response = await axiosInstance.delete<Note>(`/notes/${id}`);
   return response.data;
 };
 
 
-export async function fetchNoteById(id: number): Promise<Note> {
+export async function fetchNoteById(id: number| string): Promise<Note> {
   const res = await fetch(`/api/notes/${id}`);
   if (!res.ok) {
     throw new Error(`Failed to fetch note with id ${id}`);
