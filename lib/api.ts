@@ -48,7 +48,7 @@ export const createNote = async (note: {
 };
 
 // Дозволяємо id бути number або string
-export const deleteNote = async (id: string | number): Promise<Note> => {
+export const deleteNote = async (id: number): Promise<Note> => {
   const response = await axiosInstance.delete<Note>(`/notes/${id}`);
   return response.data;
 };
