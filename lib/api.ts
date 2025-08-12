@@ -24,17 +24,14 @@ export interface FetchNotesParams {
 }
 
 
-export const fetchNotes = async (
-  params: FetchNotesParams = {}
-): Promise<FetchNotesResponse> => {
-  const cleanParams = Object.fromEntries(
-    Object.entries(params).filter(([ , v]) => v !== undefined && v !== null && v !== '')
-  );
-
+export const fetchNotes = async (searchText: string, page: number) => {
   const response = await axiosInstance.get<FetchNotesResponse>('/notes', {
-    params: cleanParams,
+    params: {
+      ...(searchText !== '' && { search: searchText }),
+      page,
+      perPage: 12,
+    },
   });
-
   return response.data;
 };
 
@@ -54,10 +51,8 @@ export const deleteNote = async (id: number| string): Promise<Note> => {
 };
 
 
-export async function fetchNoteById(id: number| string): Promise<Note> {
-  const res = await fetch(`/api/notes/${id}`);
-  if (!res.ok) {
-    throw new Error(`Failed to fetch note with id ${id}`);
-  }
-  return res.json();
+export async function fetchNoteById(id: number | string): Promise<Note> {
+  console.log('fetchNoteById called with id:', id);
+  const response = await axiosInstance.get<Note>(`/notes/${id}`);
+  return response.data;
 }

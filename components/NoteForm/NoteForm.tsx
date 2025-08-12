@@ -4,11 +4,11 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 import type { NoteTag } from '../../types/note';
-import { createNote } from '../../services/noteService';
+import { createNote } from '@/lib/api';
 import css from './NoteForm.module.css';
 
 interface NoteFormProps {
-  onCancel: () => void;
+  onClose: () => void;
 }
 
 interface FormValues {
@@ -34,14 +34,14 @@ const validationSchema: Yup.ObjectSchema<FormValues> = Yup.object({
 });
 
 
-const NoteForm: React.FC<NoteFormProps> = ({ onCancel }) => {
+const NoteForm: React.FC<NoteFormProps> = ({ onClose }) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: createNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
-      onCancel(); // Закриває форму
+      onClose(); // Закриває форму
     },
   });
 
@@ -90,7 +90,7 @@ const NoteForm: React.FC<NoteFormProps> = ({ onCancel }) => {
           </div>
 
           <div className={css.actions}>
-            <button type="button" className={css.cancelButton} onClick={onCancel}>
+            <button type="button" className={css.cancelButton} onClick={onClose}>
               Cancel
             </button>
             <button type="submit" className={css.submitButton} disabled={isSubmitting}>
