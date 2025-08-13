@@ -56,3 +56,8 @@ export async function fetchNoteById(id: number | string): Promise<Note> {
   const response = await axiosInstance.get<Note>(`/notes/${id}`);
   return response.data;
 }
+
+export const getSingleNote = async (id: string) => {
+  const { data } = await axios.get<Note>(`/notes/${id}`)
+  return data
+}
