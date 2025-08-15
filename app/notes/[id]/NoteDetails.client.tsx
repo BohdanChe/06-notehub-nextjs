@@ -21,6 +21,7 @@ export default function NoteDetailsClient() {
   const { data: note, isLoading, error } = useQuery({
     queryKey: ["note", id],
     queryFn: () => fetchNoteById(id),
+    refetchOnMount: false, // 🔹 додано, щоб уникнути зайвого запиту
   });
 
   if (isLoading) return <p>Loading, please wait...</p>;

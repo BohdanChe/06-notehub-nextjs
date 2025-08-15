@@ -7,7 +7,7 @@ const TOKEN = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: {
-    Authorization: `Bearer ${TOKEN}`
+    Authorization: `Bearer ${TOKEN}`,
   },
 });
 
@@ -23,7 +23,7 @@ export interface FetchNotesParams {
   search?: string;
 }
 
-
+// Завантаження списку нотаток
 export const fetchNotes = async (searchText: string, page: number) => {
   const response = await axiosInstance.get<FetchNotesResponse>('/notes', {
     params: {
@@ -35,6 +35,7 @@ export const fetchNotes = async (searchText: string, page: number) => {
   return response.data;
 };
 
+// Створення нової нотатки
 export const createNote = async (note: {
   title: string;
   content: string;
@@ -44,20 +45,14 @@ export const createNote = async (note: {
   return response.data;
 };
 
-// Дозволяємо id бути number або string
-export const deleteNote = async (id: number| string): Promise<Note> => {
+// Видалення нотатки
+export const deleteNote = async (id: number | string): Promise<Note> => {
   const response = await axiosInstance.delete<Note>(`/notes/${id}`);
   return response.data;
 };
 
-
-export async function fetchNoteById(id: number | string): Promise<Note> {
-  console.log('fetchNoteById called with id:', id);
+// Завантаження однієї нотатки за ID
+export const getSingleNote = async (id: number | string): Promise<Note> => {
   const response = await axiosInstance.get<Note>(`/notes/${id}`);
   return response.data;
-}
-
-export const getSingleNote = async (id: string) => {
-  const { data } = await axios.get<Note>(`/notes/${id}`)
-  return data
-}
+};

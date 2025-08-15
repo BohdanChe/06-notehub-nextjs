@@ -4,12 +4,12 @@ import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query
 import { Metadata } from 'next'
 
 type Props = {
-  params: Promise<{ noteId: string }>
+  params: Promise<{ id: string }>
 }
 
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
-  const { noteId } = await params
-  const data = await getSingleNote(noteId)
+  const { id } = await params
+  const data = await getSingleNote(id)
 
   return {
     title: data.title.slice(0, 8),
@@ -22,13 +22,13 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
 }
 
 const NoteDetails = async ({ params }: Props) => {
-  const { noteId } = await params
+  const { id } = await params
 
   const queryClient = new QueryClient()
 
   await queryClient.prefetchQuery({
-    queryKey: ['note', noteId],
-    queryFn: () => getSingleNote(noteId),
+    queryKey: ['note', id],
+    queryFn: () => getSingleNote(id),
   })
 
   return (
