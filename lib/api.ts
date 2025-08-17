@@ -52,7 +52,8 @@ export const deleteNote = async (id: number | string): Promise<Note> => {
 };
 
 // Завантаження однієї нотатки за ID
-export const getSingleNote = async (id: number | string): Promise<Note> => {
+export const getSingleNote = async (id: string): Promise<Note> => {
   const response = await axiosInstance.get<Note>(`/notes/${id}`);
   return response.data;
 };
+

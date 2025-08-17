@@ -2,26 +2,26 @@
 
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-
+import type { Note } from "@/types/note";
+import { getSingleNote } from "@/lib/api";
 import css from "./NoteDetails.module.css";
-import type { Note } from '@/types/note';
-
-export async function fetchNoteById(id: number): Promise<Note> {
-  const res = await fetch(`/api/notes/${id}`);
-  if (!res.ok) {
-    throw new Error(`Failed to fetch note with id ${id}`);
-  }
-  return res.json();
-}
 
 export default function NoteDetailsClient() {
-  const params = useParams();
-  const id = Number(params.id);
+  const params = useParams<{ id?: string }>();
+  const id = params?.id;
 
-  const { data: note, isLoading, error } = useQuery({
+  const {
+    data: note,
+    isLoading,
+    error,
+  } = useQuery<Note>({
     queryKey: ["note", id],
-    queryFn: () => fetchNoteById(id),
-    refetchOnMount: false, // 🔹 додано, щоб уникнути зайвого запиту
+    queryFn: () => {
+      if (!id) throw new Error("Note id is missing");
+      return getSingleNote(id);
+    },
+    enabled: !!id, // ❗ Запускаємо запит тільки якщо id існує
+    refetchOnMount: false,
   });
 
   if (isLoading) return <p>Loading, please wait...</p>;
